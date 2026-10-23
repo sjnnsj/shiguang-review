@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f3ff" />
+    <link rel="icon" type="image/png" href="assets/shiguang-review-avatar.png" />
+    <title>拾光复习 · 课程包</title>
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" id="brand-home" aria-label="返回拾光复习首页">
+          <img src="assets/shiguang-review-avatar.png" alt="" />
+          <span><strong>拾光复习</strong><small>课程包模式</small></span>
+        </a>
+        <span class="status-pill"><i></i>本地课程包</span>
+      </header>
+
+      <section class="home-features" id="home-features">
+        <div class="section-heading">
+          <div class="section-heading-copy"><p class="eyebrow">学习工具</p><h2>从这里开始</h2><span>选择你现在要使用的功能</span></div>
+          <div class="course-switcher-wrap" id="course-switcher-wrap" hidden>
+            <label for="course-switcher">当前课程包</label>
+            <select id="course-switcher" aria-label="切换当前课程包"></select>
+            <small id="course-library-count">课程包会保存在当前浏览器</small>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <button class="feature-card today-feature" id="feature-today">
+            <span class="feature-icon">✓</span>
+            <span class="feature-copy"><strong>今日学习</strong><small>直接打开今天计划的章节</small><em id="today-feature-status">等待课程包</em></span>
+            <span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card import-feature" id="feature-import">
+            <span class="feature-icon">↑</span>
+            <span class="feature-copy"><strong>录入课程包</strong><small>导入整理好的 .course.json</small><em id="import-feature-status">尚未导入</em></span>
+            <span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card plan-feature" id="feature-plan">
+            <span class="feature-icon">◷</span>
+            <span class="feature-copy"><strong>计划学习</strong><small>设置每天学习几章</small><em id="plan-feature-status">等待课程包</em></span>
+            <span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card content-feature" id="feature-content">
+            <span class="feature-icon">▤</span>
+            <span class="feature-copy"><strong>学习内容</strong><small>查看知识点、闪卡和课后题</small><em id="content-feature-status">等待课程包</em></span>
+            <span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card report-feature" id="feature-report">
+            <span class="feature-icon">▥</span>
+            <span class="feature-copy"><strong>学习报告</strong><small>查看完成率、连续学习和趋势</small><em id="report-feature-status">等待记录</em></span>
+            <span class="feature-arrow">→</span>
+          </button>
+        </div>
+      </section>
+      <input id="course-file" type="file" hidden accept=".json,.course.json" />
+
+      <section class="empty-state" id="empty-state">
+        <div class="empty-icon">↑</div>
+        <h2>还没有课程包</h2>
+        <p>导入后，课程包会保存在当前浏览器，下次打开可以继续查看。</p>
+        <div class="empty-actions"><button class="primary-button" id="empty-demo">先看一个示例</button><button class="secondary-button" id="empty-import">选择课程包</button></div><p class="empty-hint">支持 .course.json；示例课程只保存在当前浏览器</p>
+      </section>
+
+      <section class="course-panel" id="course-panel" hidden>
+        <div class="course-heading">
+          <div>
+            <p class="eyebrow">已导入课程</p>
+            <h2 id="course-title">课程包</h2>
+            <p id="course-description" class="course-description"></p>
+          </div>
+          <div class="heading-actions"><button class="secondary-button" id="course-home">返回主页</button><button class="secondary-button" id="replace-button">导入新课程包</button></div>
+        </div>
+        <div class="course-meta">
+          <div><strong id="chapter-count">0</strong><span>章节</span></div>
+          <div><strong id="material-count">0</strong><span>课件材料</span></div>
+          <div><strong id="card-count">0</strong><span>知识卡片</span></div>
+          <div><strong id="quiz-count">0</strong><span>练习题</span></div>
+        </div>
+        <div class="chapter-heading"><h3>课程章节</h3><span>从这里查看整理后的内容</span></div>
+        <div class="chapter-list" id="chapter-list"></div>
+        <div class="material-assignment-card">
+          <div class="card-title"><div><h3>课件分章</h3><span>AI 识别仅供参考，请手动确认每份 PPT 属于哪一章</span></div><span>可随时调整</span></div>
+          <div class="material-assignment-list" id="material-assignment-list"></div>
+        </div>
+      </section>
+
+      <section class="today-panel" id="today-panel" hidden>
+        <div class="content-heading">
+          <div><p class="eyebrow">今日学习</p><h2 id="today-course-title">今天的学习内容</h2><p id="today-course-description" class="course-description"></p></div>
+          <div class="heading-actions"><span class="plan-status" id="today-plan-status">今天的学习计划</span><button class="secondary-button" id="today-home">返回主页</button></div>
+        </div>
+        <div class="today-layout">
+          <div class="today-record-card plan-card day-card">
+            <div class="card-title"><div><h3>今日学习记录</h3><span>勾选今天实际完成的章节</span></div><input class="date-field compact-date" id="record-date" type="date" /></div>
+            <div class="day-summary"><div><strong id="day-planned">0</strong><span>今日计划</span></div><div><strong id="day-done">0</strong><span>已经学完</span></div><div><strong id="day-left">0</strong><span>还需学习</span></div></div>
+            <div class="task-list" id="task-list"></div>
+            <div class="daily-summary" id="daily-summary"></div>
+          </div>
+          <article class="lesson-card today-lesson-card" id="today-lesson-card"></article>
+        </div>
+        <div class="history-card">
+          <div class="card-title"><div><h3>每日记录</h3><span>查看最近几天的完成情况</span></div></div>
+          <div class="history-list" id="history-list"></div>
+        </div>
+      </section>
+
+      <section class="report-panel" id="report-panel" hidden>
+        <div class="content-heading">
+          <div><p class="eyebrow">学习报告</p><h2 id="report-course-title">学习进度</h2><p id="report-course-description" class="course-description">按计划完成的章节会自动汇总到这里。</p></div>
+          <button class="secondary-button" id="report-home">返回主页</button>
+        </div>
+        <div class="report-range" role="group" aria-label="报告时间范围">
+          <button class="report-range-button active" type="button" data-report-range="7">近 7 天</button>
+          <button class="report-range-button" type="button" data-report-range="30">近 30 天</button>
+        </div>
+        <div class="report-stats" id="report-stats"></div>
+        <div class="report-grid">
+          <section class="report-card"><div class="card-title"><h3>每日完成</h3><span id="report-period-label"></span></div><div class="report-bars" id="report-bars"></div></section>
+          <section class="report-card"><div class="card-title"><h3>学习建议</h3><span>基于当前记录</span></div><div class="report-insight" id="report-insight"></div></section>
+        </div>
+      </section>
+
+      <section class="plan-panel" id="plan-panel" hidden>
+        <div class="plan-heading">
+          <div><p class="eyebrow">学习计划</p><h2>固定节奏或自由安排</h2><p>选择一种计划方式，今日学习和学习报告都会按当前方式计算。</p></div>
+          <div class="heading-actions"><span class="plan-status" id="plan-status">计划未保存</span><button class="secondary-button" id="plan-home">返回主页</button></div>
+        </div>
+        <div class="plan-mode-switch" role="tablist" aria-label="选择计划方式">
+          <button class="plan-mode-button active" type="button" role="tab" aria-selected="true" data-plan-mode="fixed">固定计划</button>
+          <button class="plan-mode-button" type="button" role="tab" aria-selected="false" data-plan-mode="custom">自定义计划</button>
+        </div>
+        <div class="plan-grid">
+          <form class="plan-card" id="plan-form">
+            <div class="card-title"><h3>固定计划</h3><span>按课程顺序生成</span></div>
+            <label class="field-label" for="daily-chapters">每天学习章节数</label>
+            <div class="number-field"><input id="daily-chapters" type="number" min="1" max="20" value="1" /><span>章 / 天</span></div>
+            <label class="field-label" for="plan-start">计划开始日期</label>
+            <input class="date-field" id="plan-start" type="date" />
+            <button class="primary-button save-plan" type="submit">保存固定计划</button>
+            <button class="secondary-button reset-plan-button" id="reset-plan" type="button">重置当前计划</button>
+            <p class="form-hint" id="plan-hint"></p>
+          </form>
+          <div class="plan-card custom-plan-card" id="custom-plan-card">
+            <div class="card-title"><h3>自定义计划</h3><span>每天单独安排</span></div>
+            <label class="field-label" for="custom-plan-date">选择安排日期</label>
+            <input class="date-field" id="custom-plan-date" type="date" />
+            <p class="form-hint">勾选当天要学习的章节，可以每天安排不同数量。</p>
+            <div class="custom-plan-chapters" id="custom-plan-chapters"></div>
+            <button class="primary-button save-plan" id="save-custom-plan" type="button">保存当天安排</button>
+            <div class="custom-plan-summary" id="custom-plan-summary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="content-panel" hidden>
+        <div class="content-heading">
+          <div><p class="eyebrow">学习内容</p><h2 id="content-course-title">课程内容</h2><p id="content-course-description" class="course-description"></p></div>
+          <button class="secondary-button" id="content-home">返回主页</button>
+        </div>
+        <div class="content-layout">
+          <aside class="content-chapters"><div class="card-title"><h3>选择章节</h3><span id="content-chapter-total"></span></div><div id="content-chapter-list"></div></aside>
+          <article class="lesson-card" id="lesson-card"></article>
+        </div>
+      </section>
+
+      <div class="file-modal" id="file-modal" hidden>
+        <div class="file-modal-backdrop" id="file-modal-backdrop"></div>
+        <section class="file-modal-card" role="dialog" aria-modal="true" aria-labelledby="file-modal-title">
+          <div class="file-modal-head">
+            <h2 id="file-modal-title">课件文件</h2>
+            <button class="modal-close" id="file-modal-close" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="file-modal-body" id="file-modal-body"></div>
+          <div class="file-modal-actions"><a id="file-modal-download" class="secondary-button" download>下载文件</a></div>
+        </section>
+      </div>
+
+      <footer class="footer"><span>拾光复习</span><span>课程包保存在当前浏览器</span></footer>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script></body>
+</html>
